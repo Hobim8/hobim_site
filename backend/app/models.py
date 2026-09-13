@@ -82,6 +82,31 @@ class Entitlement(Base):
     )
 
 
+class BotLicense(Base):
+    __tablename__ = "bot_licenses"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    entitlement_id = Column(UUID(as_uuid=True), ForeignKey("entitlements.id"), unique=True, nullable=False)
+    broker_account_number = Column(String, nullable=False)
+    license_key = Column(String, unique=True, nullable=False)
+    is_self_hosted = Column(Boolean, default=False, nullable=False)
+    last_validated_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+class Payment(Base):
+    __tablename__ = "payments"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    subscription_id = Column(UUID(as_uuid=True), ForeignKey("subscriptions.id"), nullable=True)
+    amount = Column(Numeric(10, 2), nullable=False)
+    currency = Column(String(3), default="USD", nullable=False)
+    gateway = Column(SAEnum("paystack", "flutterwave", "stripe", "crypto", "google_pay", "apple_pay", name="payment_gateway"), nullable=False)
+    gateway_reference = Column(String, unique=True, nullable=False)
+    status = Column(SAEnum("pending", "success", "failed", "refunded", name="payment_status"), default="pending", nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
 
 
@@ -90,14 +115,18 @@ class Entitlement(Base):
 
 
 
-id — same UUID pattern
-user_id — foreign key to users.id
-product_id — foreign key to products.id
-pricing_tier_id — foreign key to pricing_tiers.id
-status — Enum: "active", "cancelled", "expired", "pending"
-current_period_start — a DateTime, nullable (empty until the subscription actually activates)
-current_period_end — same, nullable — this is what tells your system when a subscription needs renewing
-created_at / updated_at — same pattern as always
+
+    
+
+
+
+
+
+
+
+
+
+
 
 
 
