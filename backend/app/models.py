@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Text, Numeric 
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Text, Numeric,UniqueConstraint
 from sqlalchemy.orm import relationship 
 from sqlalchemy import Enum as SAEnum 
 from datetime import datetime 
