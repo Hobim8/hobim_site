@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Text, Numeric,UniqueConstraint
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Text, Numeric,UniqueConstraint, Date 
 from sqlalchemy.orm import relationship 
 from sqlalchemy import Enum as SAEnum 
 from datetime import datetime 
@@ -16,6 +16,8 @@ class User(Base):
     email = Column(String, unique=True, nullable=False, index=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
+    username = Column(String, unique=True, nullable=False, index=True)
+    date_of_birth = Column(Date, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=False, nullable=False)
     role = Column(SAEnum("user", "admin", name="user_role"), default="user", nullable=False)
