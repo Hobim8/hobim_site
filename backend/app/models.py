@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Text, Numeric,UniqueConstraint, Date 
-from sqlalchemy.orm import relationship 
+from sqlalchemy.orm import Mapped, mapped_column 
 from sqlalchemy import Enum as SAEnum 
 from datetime import datetime 
 from sqlalchemy.dialects.postgresql import UUID
@@ -12,17 +12,41 @@ from app.database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) 
-    email = Column(String, unique=True, nullable=False, index=True)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
-    username = Column(String, unique=True, nullable=False, index=True)
-    date_of_birth = Column(Date, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    is_active = Column(Boolean, default=False, nullable=False)
-    role = Column(SAEnum("user", "admin", name="user_role"), default="user", nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    id: Mapped[UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4
+    )
+
+    email: Mapped[str] = mapped_column(
+        String,
+        unique=True,
+        nullable=False,
+        index=True
+    )
+
+    first_name: Mapped[str] = mapped_column(String, nullable=False)
+    last_name: Mapped[str] = mapped_column(String, nullable=False)
+
+    username: Mapped[str] = mapped_column(
+        String,
+        unique=True,
+        nullable=False,
+        index=True
+    )
+
+    date_of_birth: Mapped[Date] = mapped_column(Date, nullable=False)
+
+    hashed_password: Mapped[str] = mapped_column(
+        String,
+        nullable=False
+    )
+
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=False
+    )
 
 
 class Product(Base):

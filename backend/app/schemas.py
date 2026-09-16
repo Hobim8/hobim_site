@@ -39,3 +39,9 @@ class UserLogin(BaseModel):
     identifier: str = Field(..., description='email or username is required')
     password: str = Field(..., min_length = 8, description= 'password(min 8 characters)')
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class ForgotPassword(BaseModel):
+    email: EmailStr = Field(..., description='Account email address is required')
