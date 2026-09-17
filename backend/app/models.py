@@ -17,7 +17,6 @@ def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-
 class User(Base):
     __tablename__ = "users"
 
