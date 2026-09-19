@@ -20,73 +20,70 @@ FROM_ADDRESS = "Hobim Trades <noreply@hobimtrades.com>"
 
 
 def send_verification_email(to_email: str, first_name: str, token: str) -> None:
-    """Send an account-activation email containing a signed verification link.
-
-    Args:
-        to_email:   The recipient's email address.
-        first_name: Used to personalise the greeting.
-        token:      The signed JWT produced by create_email_verification_token().
-    """
-    # TODO: Replace with your actual frontend domain once deployed.
+    """Send an account-activation email containing a signed verification link."""
     base_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
     verify_link = f"{base_url}/verify-email?token={token}"
 
-    resend.Emails.send({
-        "from": FROM_ADDRESS,
-        "to": [to_email],
-        "subject": "Verify your Hobim Trades account",
-        "html": f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
-            <h2>Welcome to Hobim Trades, {first_name}!</h2>
-            <p>Click the button below to verify your email address and activate your account.</p>
-            <p>
-                <a href="{verify_link}"
-                   style="display:inline-block;padding:12px 24px;background:#1a1a1a;
-                          color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;">
-                    Verify my email
-                </a>
-            </p>
-            <p>This link expires in <strong>24 hours</strong>.</p>
-            <p>If you did not create an account, you can safely ignore this email.</p>
-            <hr/>
-            <small>Hobim Trades &mdash; hobimtrades.com</small>
-        </div>
-        """,
-    })
+    print(f"\n[{to_email}] ✉️ LOCAL TESTING - EMAIL VERIFICATION LINK:\n{verify_link}\n")
+
+    try:
+        resend.Emails.send({
+            "from": FROM_ADDRESS,
+            "to": [to_email],
+            "subject": "Verify your Hobim Trades account",
+            "html": f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
+                <h2>Welcome to Hobim Trades, {first_name}!</h2>
+                <p>Click the button below to verify your email address and activate your account.</p>
+                <p>
+                    <a href="{verify_link}"
+                       style="display:inline-block;padding:12px 24px;background:#1a1a1a;
+                              color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;">
+                        Verify my email
+                    </a>
+                </p>
+                <p>This link expires in <strong>24 hours</strong>.</p>
+                <p>If you did not create an account, you can safely ignore this email.</p>
+                <hr/>
+                <small>Hobim Trades &mdash; hobimtrades.com</small>
+            </div>
+            """,
+        })
+    except Exception as e:
+        print(f"⚠️ Could not send email via Resend (Domain might not be verified yet): {e}")
 
 
 def send_password_reset_email(to_email: str, first_name: str, token: str) -> None:
-    """Send a password-reset email containing a signed reset link.
-
-    Args:
-        to_email:   The recipient's email address.
-        first_name: Used to personalise the greeting.
-        token:      The signed JWT produced by create_password_reset_token().
-    """
+    """Send a password-reset email containing a signed reset link."""
     base_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
     reset_link = f"{base_url}/reset-password?token={token}"
 
-    resend.Emails.send({
-        "from": FROM_ADDRESS,
-        "to": [to_email],
-        "subject": "Reset your Hobim Trades password",
-        "html": f"""
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
-            <h2>Password Reset Request</h2>
-            <p>Hi {first_name},</p>
-            <p>We received a request to reset the password for your Hobim Trades account.</p>
-            <p>
-                <a href="{reset_link}"
-                   style="display:inline-block;padding:12px 24px;background:#1a1a1a;
-                          color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;">
-                    Reset my password
-                </a>
-            </p>
-            <p>This link expires in <strong>1 hour</strong>. If you did not request a password
-               reset, you can safely ignore this email — your password will not change.</p>
-            <hr/>
-            <small>Hobim Trades &mdash; hobimtrades.com</small>
-        </div>
-        """,
-    })
+    print(f"\n[{to_email}] ✉️ LOCAL TESTING - PASSWORD RESET LINK:\n{reset_link}\n")
+
+    try:
+        resend.Emails.send({
+            "from": FROM_ADDRESS,
+            "to": [to_email],
+            "subject": "Reset your Hobim Trades password",
+            "html": f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
+                <h2>Password Reset Request</h2>
+                <p>Hi {first_name},</p>
+                <p>We received a request to reset the password for your Hobim Trades account.</p>
+                <p>
+                    <a href="{reset_link}"
+                       style="display:inline-block;padding:12px 24px;background:#1a1a1a;
+                              color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;">
+                        Reset my password
+                    </a>
+                </p>
+                <p>This link expires in <strong>1 hour</strong>. If you did not request a password
+                   reset, you can safely ignore this email — your password will not change.</p>
+                <hr/>
+                <small>Hobim Trades &mdash; hobimtrades.com</small>
+            </div>
+            """,
+        })
+    except Exception as e:
+        print(f" Could not send email via Resend: {e}")
 
