@@ -22,7 +22,7 @@ from app.auth.jwt import (
 from app.auth.security import hash_password, verify_password
 from app.database import get_db
 from app.models import User
-from app.schemas import ForgotPassword, ResetPassword, Token, UserCreate, UserResponse, UserLogin 
+from app.schemas.userschema import ForgotPassword, ResetPassword, Token, UserCreate, UserResponse, UserLogin 
 from app.services.email import send_password_reset_email, send_verification_email
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -71,7 +71,7 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=Token)
-def login(login_data: "UserLogin", db: Session = Depends(get_db)):
+def login(login_data: UserLogin, db: Session = Depends(get_db)):
     """Authenticate with email/username + password and receive a JWT access token."""
     
 
