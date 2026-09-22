@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import JWTError
 from sqlalchemy.orm import Session
 
@@ -10,11 +10,11 @@ from app.models import User
 # Tells FastAPI where clients send their access tokens.
 # The tokenUrl value is used by the OpenAPI /docs UI to populate the
 # "Authorize" button — it must match the login endpoint path.
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+security = HTTPBearer()
 
 
 def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
 ) -> User:
     """FastAPI dependency that validates the Bearer token and returns the authenticated User.
@@ -30,6 +30,7 @@ def get_current_user(
         401 Unauthorized  — user ID from the token no longer exists in the DB.
         403 Forbidden     — account exists but email has not been verified yet.
     """
+    token = credentials.credentials
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

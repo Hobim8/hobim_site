@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import auth
+from app.routers import auth, products 
 
 app = FastAPI(
     title="Hobim Trades API",
@@ -21,6 +21,7 @@ app.add_middleware(
 
 # Include all modular routers here
 app.include_router(auth.router)
+app.include_router(products.router)
 
 
 @app.get("/health", tags=["system"])
