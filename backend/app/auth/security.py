@@ -1,4 +1,5 @@
 import bcrypt
+import secrets
 
 def hash_password(password: str) -> str:
     """Hashes a password using bcrypt and returns a string."""
@@ -16,3 +17,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     hashed_bytes = hashed_password.encode('utf-8')
     
     return bcrypt.checkpw(plain_bytes, hashed_bytes)
+
+def generate_license_key() -> str:
+    """generates license key for bot."""
+    return secrets.token_hex(16)  
