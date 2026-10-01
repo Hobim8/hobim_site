@@ -41,7 +41,7 @@ def grant_entitlement(
     )
 
     db.add(new_entitlement)
-    db.commit
+    db.commit()
     db.refresh(new_entitlement)
     return new_entitlement
 

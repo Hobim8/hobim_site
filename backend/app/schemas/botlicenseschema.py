@@ -4,12 +4,16 @@ import uuid
 from typing import Optional
 
 
+class BotLicenseCreate(BaseModel):
+    entitlement_id: uuid.UUID
+    broker_account_number: str
+    is_self_hosted: bool 
+
 class BotLicenseActivate(BaseModel):
 
     product_id: uuid.UUID
     broker_account_number: str 
     is_self_hosted: bool = False
-
 
 class BotLicenseResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -21,7 +25,6 @@ class BotLicenseResponse(BaseModel):
     is_self_hosted: bool
     last_validated_at: Optional[datetime] = None 
     created_at: datetime 
-
 
 class BotLicenseValidate(BaseModel):
 
