@@ -59,7 +59,20 @@ def create_payment(
         redirect_url=f"{FRONTEND_URL}/payment-complete",
     )
 
-    checkout_url = flw_response["data"]["link"]
+    flw_data = flw_response["data"]
+
+    checkout_url = flw_data["link"]
+    flutterwave_transaction_id = flw_data.get("id")
+
+    new_payment.checkout_url = checkout_url
+    new_payment.flutterwave_transaction_id = (
+        str(flutterwave_transaction_id)
+        if flutterwave_transaction_id is not None
+        else None
+    )
+
+    db.commit()
+    db.refresh(new_payment)
 
     return {"payment": new_payment, "checkout_url": checkout_url}
 

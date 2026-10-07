@@ -35,7 +35,9 @@ def initiate_transaction(
 
 
 def verify_transaction(transaction_id: str) -> dict:
+
     """Ask Flutterwave directly: what is the real, current status of this transaction?"""
+    
     headers = {"Authorization": f"Bearer {FLW_SECRET_KEY}"}
     response = requests.get(f"{BASE_URL}/transactions/{transaction_id}/verify", headers=headers)
     response.raise_for_status()
