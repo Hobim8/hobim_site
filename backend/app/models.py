@@ -433,6 +433,16 @@ class Payment(Base):
         nullable=False,
     )
 
+    flutterwave_transaction_id: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable = True, 
+    )
+
+    checkout_url: Mapped[str | None] = mapped_column(
+        Text, 
+        nullable=True, 
+    )
+
     status: Mapped[str] = mapped_column(
         SAEnum(
             "pending",
